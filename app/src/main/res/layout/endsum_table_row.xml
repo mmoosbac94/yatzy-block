@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:minHeight="31dp"
+    android:layout_weight="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum1"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum2"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum3"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum4"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum5"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/endSum6"
+        android:layout_weight="1"
+        android:background="@drawable/cell_shape" />
+
+</TableRow>
