@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var endSumTableRow: TableRow
 
 
+    private var listOfColumns: MutableList<MutableList<TextView>> = mutableListOf()
+
     private val listTextViews1column: MutableList<TextView> = mutableListOf()
     private val listTextViews2column: MutableList<TextView> = mutableListOf()
     private val listTextViews3column: MutableList<TextView> = mutableListOf()
@@ -69,6 +71,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        listOfColumns.add(listTextViews1column)
+        listOfColumns.add(listTextViews2column)
+        listOfColumns.add(listTextViews3column)
+        listOfColumns.add(listTextViews4column)
+        listOfColumns.add(listTextViews5column)
+        listOfColumns.add(listTextViews6column)
+
         addListener()
 
     }
@@ -103,10 +112,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun addListener() {
 
-        listTextViews1column.forEach {
-            it.doAfterTextChanged {
-                (endSumTableRow.getChildAt(1) as TextView).text =
-                    viewModel.sumUpAll(listTextViews1column).toString()
+        listOfColumns.forEachIndexed { index, mutableList ->
+            mutableList.forEach { textField ->
+                textField.doAfterTextChanged {
+                    (endSumTableRow.getChildAt(index + 1) as TextView).text =
+                        viewModel.sumUpAll(mutableList).toString()
+                }
             }
         }
     }
