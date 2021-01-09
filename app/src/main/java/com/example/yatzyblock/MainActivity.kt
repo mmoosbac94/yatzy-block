@@ -1,11 +1,14 @@
 package com.example.yatzyblock
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.*
 import androidx.core.view.children
+import androidx.core.view.forEach
+import androidx.core.view.forEachIndexed
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
 
     private lateinit var endSumTableRow: TableRow
+    private lateinit var firstSumTableRow: TableRow
+    private lateinit var bonusTableRow: TableRow
 
 
     private var listOfColumns: MutableList<MutableList<TextView>> = mutableListOf()
@@ -38,9 +43,16 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         endSumTableRow = layoutInflater.inflate(R.layout.endsum_table_row, null) as TableRow
+        firstSumTableRow = layoutInflater.inflate(R.layout.endsum_table_row, null) as TableRow
+        bonusTableRow = layoutInflater.inflate(R.layout.endsum_table_row, null) as TableRow
 
         createRowsAndColumns()
+
+        addListener()
     }
+
+    // Temporarily deactivated system back button
+    override fun onBackPressed() {}
 
 
     private fun createRowsAndColumns() {
@@ -56,8 +68,8 @@ class MainActivity : AppCompatActivity() {
                 5 -> defineTableRow(tableRow, i, "Fünfer")
                 6 -> defineTableRow(tableRow, i, "Sechser")
 
-                7 -> defineTableRow(tableRow, i, "Summe:")
-                8 -> defineTableRow(tableRow, i, "Bonus")
+                7 -> defineTableRow(firstSumTableRow, i, "Summe:")
+                8 -> defineTableRow(bonusTableRow, i, "Bonus")
                 9 -> defineTableRow(tableRow, i, "1 Paar")
                 10 -> defineTableRow(tableRow, i, "2 Paar")
                 11 -> defineTableRow(tableRow, i, "Drei Gleiche")
@@ -78,30 +90,19 @@ class MainActivity : AppCompatActivity() {
         listOfColumns.add(listTextViews5column)
         listOfColumns.add(listTextViews6column)
 
-        addListener()
-
     }
 
 
     private fun defineTableRow(tableRow: TableRow, numberRow: Int, name: String) {
 
-        if (numberRow != 0 && numberRow != 18) {
+        if (numberRow != 0 && numberRow != 18 && numberRow != 7 && numberRow != 8) {
             tableRow.children.forEach {
                 (it as TextView).inputType = InputType.TYPE_CLASS_NUMBER
 
             }
-
-            for (i in 1..tableRow.childCount) {
-                when (i) {
-                    1 -> listTextViews1column.add(tableRow.getChildAt(1) as TextView)
-                    2 -> listTextViews2column.add(tableRow.getChildAt(2) as TextView)
-                    3 -> listTextViews3column.add(tableRow.getChildAt(3) as TextView)
-                    4 -> listTextViews4column.add(tableRow.getChildAt(4) as TextView)
-                    5 -> listTextViews5column.add(tableRow.getChildAt(5) as TextView)
-                    6 -> listTextViews6column.add(tableRow.getChildAt(6) as TextView)
-                }
-            }
-
+            defineColumn(tableRow)
+        } else if (numberRow != 0) {
+            tableRow.setBackgroundColor(Color.GRAY)
         }
 
         (tableRow.getChildAt(0) as TextView).text = name
@@ -109,15 +110,40 @@ class MainActivity : AppCompatActivity() {
         binding.yatzyTable.addView(tableRow)
     }
 
+    private fun defineColumn(tableRow: TableRow) {
+        for (i in 1..tableRow.childCount) {
+            when (i) {
+                1 -> listTextViews1column.add(tableRow.getChildAt(1) as TextView)
+                2 -> listTextViews2column.add(tableRow.getChildAt(2) as TextView)
+                3 -> listTextViews3column.add(tableRow.getChildAt(3) as TextView)
+                4 -> listTextViews4column.add(tableRow.getChildAt(4) as TextView)
+                5 -> listTextViews5column.add(tableRow.getChildAt(5) as TextView)
+                6 -> listTextViews6column.add(tableRow.getChildAt(6) as TextView)
+            }
+        }
+    }
+
 
     private fun addListener() {
 
         listOfColumns.forEachIndexed { index, mutableList ->
+
             mutableList.forEach { textField ->
                 textField.doAfterTextChanged {
-                    (endSumTableRow.getChildAt(index + 1) as TextView).text =
-                        viewModel.sumUpAll(mutableList).toString()
+                    val sum: Int = viewModel.sumUp(mutableList.subList(0, 6))
+                    (firstSumTableRow.getChildAt(index + 1) as TextView).text =
+                        sum.toString()
+                    if (viewModel.checkIfBonus(sum)) {
+                        (bonusTableRow.getChildAt(index + 1) as TextView).text = "30"
+                    } else {
+                        (bonusTableRow.getChildAt(index + 1) as TextView).text = "0"
+                    }
                 }
+            }
+
+            (bonusTableRow.getChildAt(index + 1) as TextView).doAfterTextChanged {
+                (endSumTableRow.getChildAt(index + 1) as TextView).text =
+                    viewModel.sumUp(mutableList, it.toString().toInt()).toString()
             }
         }
     }
