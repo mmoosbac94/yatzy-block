@@ -71,4 +71,10 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha07"
+
+
+    // Koin
+    androidTestImplementation "org.koin:koin-test:$koinVersion"
+    implementation "org.koin:koin-android-viewmodel:$koinVersion"
+    implementation "org.koin:koin-android:$koinVersion"
 }

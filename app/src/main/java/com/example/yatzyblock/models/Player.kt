@@ -1,8 +1,7 @@
 package com.example.yatzyblock.models
 
-class Player {
+class Player(val name: String) {
 
-    var name: String = ""
     var einser: Int = 0
     var zweier: Int = 0
     var dreier: Int = 0
