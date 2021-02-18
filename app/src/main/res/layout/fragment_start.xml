@@ -41,14 +41,19 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/nameLayout"
+        <ListView
+            android:id="@+id/playerListView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="50dp"/>
 
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/startButton"
+            android:layout_marginStart="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:backgroundTint="@android:color/holo_green_dark"/>
 
     </LinearLayout>
 

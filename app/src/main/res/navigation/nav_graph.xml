@@ -19,7 +19,7 @@
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <argument
-            android:name="numberPlayers"
-            app:argType="integer" />
+            android:name="players"
+            app:argType="com.example.yatzyblock.models.Player[]"/>
     </fragment>
 </navigation>

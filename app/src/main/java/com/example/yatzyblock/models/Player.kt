@@ -1,6 +1,11 @@
 package com.example.yatzyblock.models
 
-class Player(val name: String) {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
+data class Player(val name: String): Parcelable {
 
     var einser: Int = 0
     var zweier: Int = 0
