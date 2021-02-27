@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
+import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.R
 import com.example.yatzyblock.databinding.FragmentGameBinding
 import com.example.yatzyblock.models.Player
@@ -47,15 +48,13 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
         val listRows: MutableList<TableRow> = mutableListOf()
 
-        var i = 0
-        while (i < 18) {
+        EntryType.values().map { entryType ->
             val tableRow = TableRow(context)
             listRows.add(tableRow)
             val firstColumnTextView = TextView(context)
-            firstColumnTextView.text = "name$i"
+            firstColumnTextView.text = entryType.entry
             tableRow.addView(firstColumnTextView)
             binding.yatzyTableLayout.addView(tableRow)
-            i++
         }
 
         listRows.forEachIndexed { rowIndex, row ->
@@ -68,7 +67,11 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                     val editTextView = EditText(context)
                     editTextView.inputType = InputType.TYPE_CLASS_NUMBER
                     editTextView.doOnTextChanged { text, _, _, _ ->
-                        viewModel.addValueToPlayer(text.toString().toInt(), player, rowIndex)
+                        viewModel.addValueToPlayer(
+                            text.toString().toInt(),
+                            player,
+                            EntryType.values()[rowIndex]
+                        )
                     }
                     row.addView(editTextView)
                 }

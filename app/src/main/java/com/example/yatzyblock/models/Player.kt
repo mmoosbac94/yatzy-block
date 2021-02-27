@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-data class Player(val name: String): Parcelable {
+data class Player(val name: String) : Parcelable {
 
     var einser: Int = 0
     var zweier: Int = 0
@@ -26,5 +26,9 @@ data class Player(val name: String): Parcelable {
     var chance: Int = 0
     var yatzy: Int = 0
     var endSumme: Int = 0
+
+    override fun toString(): String {
+        return "Name" + name + " Einser" + einser + "Zweier" + zweier + "Dreier" + dreier
+    }
 
 }
