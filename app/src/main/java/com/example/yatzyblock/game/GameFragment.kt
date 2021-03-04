@@ -2,6 +2,7 @@ package com.example.yatzyblock.game
 
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,24 +10,38 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.core.view.children
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.observe
 import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.R
 import com.example.yatzyblock.databinding.FragmentGameBinding
 import com.example.yatzyblock.models.Player
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import org.w3c.dom.Text
 
 
 class GameFragment : Fragment(R.layout.fragment_game) {
 
     private lateinit var binding: FragmentGameBinding
 
-    private val viewModel: GameViewModel by viewModel()
+    private val listRows: MutableList<TableRow> = mutableListOf()
+
+    private lateinit var viewModel: GameViewModel
+    private lateinit var argument: GameFragmentArgs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        argument = GameFragmentArgs.fromBundle(requireArguments())
+
+        val viewModel: GameViewModel by viewModel {
+            parametersOf(argument.players)
+        }
+        this.viewModel = viewModel
 
         binding = FragmentGameBinding.inflate(inflater)
 
@@ -37,16 +52,19 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
 
     private fun init() {
-        val arguments = GameFragmentArgs.fromBundle(requireArguments())
-        buildTableLayout(arguments.players)
 
-        setUpPlayers(arguments.players)
+        buildTableLayout(argument.players)
+
+        viewModel.playerList.observe(viewLifecycleOwner) { playerList ->
+            for ((index, value) in playerList.withIndex()) {
+                (listRows[EntryType.SummeOben.ordinal].getChildAt(index + 1) as TextView).text =
+                    value.summeOben.toString()
+            }
+        }
     }
 
 
     private fun buildTableLayout(players: Array<Player>) {
-
-        val listRows: MutableList<TableRow> = mutableListOf()
 
         EntryType.values().map { entryType ->
             val tableRow = TableRow(context)
@@ -59,29 +77,40 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
         listRows.forEachIndexed { rowIndex, row ->
             players.forEach { player ->
-                if (rowIndex == 0) {
-                    val nameTextView = TextView(context)
-                    nameTextView.text = player.name
-                    row.addView(nameTextView)
-                } else {
-                    val editTextView = EditText(context)
-                    editTextView.inputType = InputType.TYPE_CLASS_NUMBER
-                    editTextView.doOnTextChanged { text, _, _, _ ->
-                        viewModel.addValueToPlayer(
-                            text.toString().toInt(),
-                            player,
-                            EntryType.values()[rowIndex]
-                        )
+                when (EntryType.values()[rowIndex]) {
+                    EntryType.PlayerName -> {
+                        val nameTextView = TextView(context)
+                        nameTextView.text = player.name
+                        row.addView(nameTextView)
                     }
-                    row.addView(editTextView)
+                    EntryType.SummeOben -> {
+                        val sumTopTextView = TextView(context)
+                        row.addView(sumTopTextView)
+                    }
+                    EntryType.HatBonus -> {
+                        val bonusTextView = TextView(context)
+                        row.addView(bonusTextView)
+                    }
+                    EntryType.EndSumme -> {
+                        val sumBottomTextView = TextView(context)
+                        row.addView(sumBottomTextView)
+                    }
+                    else -> {
+                        val editTextView = EditText(context)
+                        editTextView.inputType = InputType.TYPE_CLASS_NUMBER
+                        editTextView.doOnTextChanged { text, _, _, _ ->
+                            viewModel.addValueToPlayer(
+                                text.toString().toInt(),
+                                player,
+                                EntryType.values()[rowIndex]
+                            )
+                        }
+                        row.addView(editTextView)
+                    }
                 }
             }
         }
 
-    }
-
-    private fun setUpPlayers(players: Array<Player>) {
-        viewModel.addPlayers(players)
     }
 
 }

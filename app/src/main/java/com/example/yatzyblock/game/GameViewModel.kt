@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.models.Player
 
-class GameViewModel : ViewModel() {
+class GameViewModel(players: Array<Player>) : ViewModel() {
 
     private var _playerList = MutableLiveData<MutableList<Player>>(mutableListOf())
     val playerList: LiveData<MutableList<Player>>
         get() = _playerList
 
 
-    fun addPlayers(players: Array<Player>) {
+    init {
         players.map { player ->
             _playerList.value?.add(player)
         }
@@ -28,25 +28,28 @@ class GameViewModel : ViewModel() {
             EntryType.Vierer -> player.vierer = value
             EntryType.Fuenfer -> player.fuenfer = value
             EntryType.Sechser -> player.sechser = value
-            EntryType.SummeOben -> player.summeOben
-            EntryType.HatBonus -> player.hatBonus
-            EntryType.EinPaar -> player.einPaar
-            EntryType.ZweiPaar -> player.zweiPaar
-            EntryType.DreiGleiche -> player.dreiGleiche
-            EntryType.VierGleiche -> player.vierGleiche
-            EntryType.KleineStrasse -> player.kleineStrasse
-            EntryType.GrosseStrasse -> player.grosseStrasse
-            EntryType.VollesHaus -> player.vollesHaus
-            EntryType.Chance -> player.chance
-            EntryType.Yatzy -> player.yatzy
-            EntryType.EndSumme -> player.endSumme
+
+            EntryType.EinPaar -> player.einPaar = value
+            EntryType.ZweiPaar -> player.zweiPaar = value
+            EntryType.DreiGleiche -> player.dreiGleiche = value
+            EntryType.VierGleiche -> player.vierGleiche = value
+            EntryType.KleineStrasse -> player.kleineStrasse = value
+            EntryType.GrosseStrasse -> player.grosseStrasse = value
+            EntryType.VollesHaus -> player.vollesHaus = value
+            EntryType.Chance -> player.chance = value
+            EntryType.Yatzy -> player.yatzy = value
+
             else -> return
         }
 
-        _playerList.value?.map {
-            Log.i("INFO", it.toString())
-        }
+        player.summeOben = player.einser
 
+        _playerList.notifyObservers()
+
+    }
+
+    private fun <T> MutableLiveData<MutableList<T>>.notifyObservers() {
+        this.value = this.value
     }
 
 
