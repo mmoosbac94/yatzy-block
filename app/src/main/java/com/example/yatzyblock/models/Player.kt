@@ -14,7 +14,7 @@ data class Player(val name: String) : Parcelable {
     var fuenfer: Int = 0
     var sechser: Int = 0
     var summeOben: Int = 0
-    var hatBonus: Boolean = false
+    var bonus: Int = 0
 
     var einPaar: Int = 0
     var zweiPaar: Int = 0

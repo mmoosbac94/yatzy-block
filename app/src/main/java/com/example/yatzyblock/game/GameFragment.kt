@@ -55,10 +55,18 @@ class GameFragment : Fragment(R.layout.fragment_game) {
 
         buildTableLayout(argument.players)
 
+        addPlayerListObserver()
+    }
+
+    private fun addPlayerListObserver() {
         viewModel.playerList.observe(viewLifecycleOwner) { playerList ->
-            for ((index, value) in playerList.withIndex()) {
+            for ((index, player) in playerList.withIndex()) {
                 (listRows[EntryType.SummeOben.ordinal].getChildAt(index + 1) as TextView).text =
-                    value.summeOben.toString()
+                    player.summeOben.toString()
+                (listRows[EntryType.HatBonus.ordinal].getChildAt(index + 1) as TextView).text =
+                    player.bonus.toString()
+                (listRows[EntryType.EndSumme.ordinal].getChildAt(index + 1) as TextView).text =
+                    player.endSumme.toString()
             }
         }
     }
@@ -100,9 +108,9 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                         editTextView.inputType = InputType.TYPE_CLASS_NUMBER
                         editTextView.doOnTextChanged { text, _, _, _ ->
                             viewModel.addValueToPlayer(
-                                text.toString().toInt(),
-                                player,
-                                EntryType.values()[rowIndex]
+                                value = text.toString().toInt(),
+                                player = player,
+                                entryType = EntryType.values()[rowIndex]
                             )
                         }
                         row.addView(editTextView)
