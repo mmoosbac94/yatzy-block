@@ -3,12 +3,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-<TableLayout
-    android:id="@+id/yatzyTableLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".game.GameFragment" >
-</TableLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:id="@+id/yatzyTableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".game.GameFragment"
+            android:stretchColumns="*"/>
+    </ScrollView>
 
 
 </layout>

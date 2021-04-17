@@ -37,6 +37,7 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private fun init() {
         binding.addPlayerButton.setOnClickListener {
             viewModel.addPlayer(binding.editTextName.text.toString())
+            binding.editTextName.setText("")
         }
 
         viewModel.listPlayers.observe(viewLifecycleOwner) { playerList ->
@@ -55,7 +56,11 @@ class StartFragment : Fragment(R.layout.fragment_start) {
 
         binding.startButton.setOnClickListener {
             val nameListArray: Array<Player> = playerList.toTypedArray()
-            findNavController().navigate(StartFragmentDirections.actionStartFragmentToGameFragment(nameListArray))
+            findNavController().navigate(
+                StartFragmentDirections.actionStartFragmentToGameFragment(
+                    nameListArray
+                )
+            )
         }
 
     }

@@ -9,7 +9,7 @@ enum class EntryType(val entry: String) {
     Fuenfer("Fünfer"),
     Sechser("Sechser"),
     SummeOben("Summe"),
-    HatBonus("Bonus"),
+    Bonus("Bonus"),
     EinPaar("Ein Paar"),
     ZweiPaar("Zwei Paar"),
     DreiGleiche("Drei Gleiche"),
