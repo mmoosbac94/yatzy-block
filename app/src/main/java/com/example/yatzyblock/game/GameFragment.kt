@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
-import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -38,6 +35,8 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         savedInstanceState: Bundle?
     ): View? {
 
+        setHasOptionsMenu(true)
+
         argument = GameFragmentArgs.fromBundle(requireArguments())
 
         val viewModel: GameViewModel by viewModel {
@@ -50,6 +49,34 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         init()
 
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.options_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.storeHighScore_menuEntry -> {
+                viewModel.storeHighScorePlayer(viewModel.playerList.value!!)
+                return true
+            }
+            R.id.showHighScore_menuEntry -> {
+                val highScorePlayer: Player = viewModel.getHighScorePlayer()
+                val dialogBuilder = AlertDialog.Builder(requireContext())
+                dialogBuilder.setTitle("Aktueller Highscore")
+                dialogBuilder.setMessage(
+                    "Aktueller HighScore wird von ${highScorePlayer.name} " +
+                            "mit ${highScorePlayer.endSumme} gehalten!"
+                )
+                val alert = dialogBuilder.create()
+                alert.show()
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 

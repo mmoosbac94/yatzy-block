@@ -1,12 +1,18 @@
 package com.example.yatzyblock.game
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.models.Player
+import com.example.yatzyblock.repositories.SharedPreferencesRepository
 
-class GameViewModel(players: Array<Player>) : ViewModel() {
+
+class GameViewModel(
+    players: Array<Player>,
+    private val sharedPreferencesRepository: SharedPreferencesRepository
+) : ViewModel() {
 
     private var _playerList = MutableLiveData<MutableList<Player>>(mutableListOf())
     val playerList: LiveData<MutableList<Player>>
@@ -17,6 +23,18 @@ class GameViewModel(players: Array<Player>) : ViewModel() {
         players.map { player ->
             _playerList.value?.add(player)
         }
+    }
+
+    fun storeHighScorePlayer(list: List<Player>) {
+        var currentHighScorePlayer: Player = getHighScorePlayer()
+        list.forEach {
+            if (it.endSumme > currentHighScorePlayer.endSumme) currentHighScorePlayer = it
+        }
+        sharedPreferencesRepository.insertPlayerData(currentHighScorePlayer)
+    }
+
+    fun getHighScorePlayer(): Player {
+        return sharedPreferencesRepository.getPlayerData()
     }
 
     fun addValueToPlayer(value: Int, player: Player, entryType: EntryType) {
