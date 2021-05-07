@@ -6,4 +6,5 @@
     <string name="start">Start</string>
     <string name="storeHighScore">Store HighScore</string>
     <string name="showHighScore">Show HighScore</string>
+    <string name="highScoreMessage">"Aktueller HighScore wird von %1$s mit %2$d Punkten gehalten!"</string>
 </resources>

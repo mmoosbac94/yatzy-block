@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -65,11 +66,17 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             R.id.showHighScore_menuEntry -> {
                 val highScorePlayer: Player = viewModel.getHighScorePlayer()
                 val dialogBuilder = AlertDialog.Builder(requireContext())
-                dialogBuilder.setTitle("Aktueller Highscore")
-                dialogBuilder.setMessage(
-                    "Aktueller HighScore wird von ${highScorePlayer.name} " +
-                            "mit ${highScorePlayer.endSumme} gehalten!"
+                val message = TextView(requireContext())
+                message.setPadding(90)
+                message.textSize = 20.0F
+                message.setTextColor(Color.BLACK)
+                message.text = getString(
+                    R.string.highScoreMessage,
+                    highScorePlayer.name,
+                    highScorePlayer.endSumme
                 )
+                dialogBuilder.setTitle("Aktueller Highscore")
+                dialogBuilder.setView(message)
                 val alert = dialogBuilder.create()
                 alert.show()
                 return true

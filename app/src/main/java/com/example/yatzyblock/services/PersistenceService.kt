@@ -2,6 +2,7 @@ package com.example.yatzyblock.services
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.yatzyblock.models.Player
 import com.google.gson.Gson
 
@@ -14,6 +15,7 @@ class PersistenceService(context: Context) {
     fun getPlayerData(): Player {
         val playerJson: String? =
             preferences.getString("highscore_player", "No highscore_player found")
+        if (playerJson == "No highscore_player found") return Player("NoName")
         return Gson().fromJson(playerJson, Player::class.java)
     }
 
