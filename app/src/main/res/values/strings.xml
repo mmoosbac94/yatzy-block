@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">YatzyBlock</string>
+    <string name="app_name">Yatzy Block</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="spieler">Spieler</string>
     <string name="start">Start</string>
-    <string name="storeHighScore">Store HighScore</string>
-    <string name="showHighScore">Show HighScore</string>
-    <string name="highScoreMessage">"Aktueller HighScore wird von %1$s mit %2$d Punkten gehalten!"</string>
+    <string name="storeHighScore">Highscore speichern</string>
+    <string name="showHighScore">Highscore anzeigen</string>
+    <string name="highScoreMessage">"Aktueller Highscore wird von %1$s mit %2$d Punkten gehalten!"</string>
+    <string name="noHighscoreYet">"Aktuell gibt es noch keinen Highscore…"</string>
 </resources>

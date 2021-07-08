@@ -1,15 +1,19 @@
 package com.example.yatzyblock.game
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.view.*
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
 import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -70,7 +74,9 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                 message.setPadding(90)
                 message.textSize = 20.0F
                 message.setTextColor(Color.BLACK)
-                message.text = getString(
+                if (highScorePlayer.name == "NoName") message.text =
+                    getString(R.string.noHighscoreYet)
+                else message.text = getString(
                     R.string.highScoreMessage,
                     highScorePlayer.name,
                     highScorePlayer.endSumme
@@ -115,8 +121,15 @@ class GameFragment : Fragment(R.layout.fragment_game) {
             listRows.add(tableRow)
             val firstColumnTextView = TextView(context)
             firstColumnTextView.text = entryType.entry
+            if (entryType == EntryType.PlayerName || entryType == EntryType.SummeOben
+                || entryType == EntryType.EndSumme || entryType == EntryType.Bonus
+            ) {
+                firstColumnTextView.setTypeface(null, Typeface.BOLD)
+                firstColumnTextView.textSize = 17.0F
+            }
             firstColumnTextView.setPadding(30, 0, 0, 0)
             tableRow.addView(firstColumnTextView)
+            tableRow.gravity = Gravity.CENTER_VERTICAL
             binding.yatzyTableLayout.addView(tableRow)
         }
 
@@ -125,22 +138,35 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                 when (EntryType.values()[rowIndex]) {
                     EntryType.PlayerName -> {
                         val nameTextView = TextView(context)
+                        customizeValueTextView(nameTextView)
                         setupTextView(nameTextView, row, player.name)
                     }
                     EntryType.SummeOben -> {
                         val sumTopTextView = TextView(context)
+                        customizeValueTextView(sumTopTextView)
                         setupTextView(sumTopTextView, row)
                     }
                     EntryType.Bonus -> {
                         val bonusTextView = TextView(context)
+                        customizeValueTextView(bonusTextView)
                         setupTextView(bonusTextView, row)
                     }
                     EntryType.EndSumme -> {
                         val sumBottomTextView = TextView(context)
+                        customizeValueTextView(sumBottomTextView)
                         setupTextView(sumBottomTextView, row)
                     }
                     else -> {
+                        val container = LinearLayout(requireContext())
+                        val lp = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        lp.setMargins(0, 20, 20, 20)
                         val editTextView = EditText(context)
+                        editTextView.layoutParams = lp
+                        editTextView.setTextColor(Color.WHITE)
+                        editTextView.setBackgroundResource(R.drawable.border_text)
                         editTextView.gravity = Gravity.CENTER
                         editTextView.inputType = InputType.TYPE_CLASS_NUMBER
                         editTextView.filters = arrayOf<InputFilter>(LengthFilter(3))
@@ -155,11 +181,17 @@ class GameFragment : Fragment(R.layout.fragment_game) {
                                 entryType = EntryType.values()[rowIndex]
                             )
                         }
-                        row.addView(editTextView)
+                        container.addView(editTextView, lp)
+                        row.addView(container)
                     }
                 }
             }
         }
+    }
+
+    private fun customizeValueTextView(textView: TextView) {
+        textView.textSize = 20.0F
+        textView.setTypeface(null, Typeface.BOLD)
     }
 
     private fun setupTextView(textView: TextView, row: TableRow, playerName: String = "") {

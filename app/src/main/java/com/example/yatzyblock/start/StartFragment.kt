@@ -46,8 +46,8 @@ class StartFragment : Fragment(R.layout.fragment_start) {
             val adapter = context?.let {
                 ArrayAdapter<String>(
                     it,
-                    android.R.layout.simple_spinner_item,
-                    nameList
+                    R.layout.custom_textview_list,
+                    nameList,
                 )
             }
             binding.playerListView.adapter = adapter

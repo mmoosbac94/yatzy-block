@@ -6,7 +6,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Player(
-    val name: String, var einser: Int = 0,
+    val name: String,
+    var einser: Int = 0,
     var zweier: Int = 0,
     var dreier: Int = 0,
     var vierer: Int = 0,

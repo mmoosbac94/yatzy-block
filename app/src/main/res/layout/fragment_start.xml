@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#28733c"
         android:orientation="vertical"
         tools:context=".start.StartFragment">
 
@@ -14,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:text="@string/spieler"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="30sp" />
 
         <LinearLayout
@@ -29,14 +30,16 @@
                 android:layout_marginStart="35dp"
                 android:drawablePadding="40dp"
                 android:hint="Enter name"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
 
             <ImageButton
                 android:id="@+id/addPlayerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_add_box_24"
-                android:layout_marginStart="30dp"/>
+                android:layout_marginStart="30dp"
+                android:src="@drawable/ic_baseline_add_box_24" />
 
 
         </LinearLayout>
@@ -45,15 +48,15 @@
             android:id="@+id/playerListView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="50dp"/>
+            android:layout_margin="50dp" />
 
         <Button
             android:id="@+id/startButton"
-            android:layout_marginStart="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start"
-            android:backgroundTint="@android:color/holo_green_dark"/>
+            android:layout_marginStart="50dp"
+            android:backgroundTint="#285c36"
+            android:text="@string/start" />
 
     </LinearLayout>
 
