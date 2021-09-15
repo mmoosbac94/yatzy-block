@@ -3,10 +3,6 @@
 
     <item
         android:id="@+id/storeHighScore_menuEntry"
-        android:title="@string/storeHighScore" />
-
-    <item
-        android:id="@+id/showHighScore_menuEntry"
-        android:title="@string/showHighScore" />
+        android:title="@string/storePlayers" />
 
 </menu>

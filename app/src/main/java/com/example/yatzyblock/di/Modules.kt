@@ -2,8 +2,8 @@ package com.example.yatzyblock.di
 
 import com.example.yatzyblock.game.GameViewModel
 import com.example.yatzyblock.models.Player
-import com.example.yatzyblock.repositories.SharedPreferencesRepository
-import com.example.yatzyblock.services.PersistenceService
+import com.example.yatzyblock.repositories.PlayerRepository
+import com.example.yatzyblock.services.APIService
 import com.example.yatzyblock.start.StartViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -14,8 +14,5 @@ val appModule = module {
 
     viewModel { (players: Array<Player>) -> GameViewModel(players, get()) }
 
-    single { PersistenceService(get()) }
-
-    single { SharedPreferencesRepository(get()) }
-
+    single { PlayerRepository() }
 }

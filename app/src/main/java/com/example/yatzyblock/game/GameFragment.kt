@@ -1,5 +1,6 @@
 package com.example.yatzyblock.game
 
+import android.R.attr
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -24,6 +25,10 @@ import com.example.yatzyblock.databinding.FragmentGameBinding
 import com.example.yatzyblock.models.Player
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
+
+import android.R.attr.data
 
 
 class GameFragment : Fragment(R.layout.fragment_game) {
@@ -64,32 +69,19 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.storeHighScore_menuEntry -> {
-                viewModel.storeHighScorePlayer(viewModel.playerList.value!!)
+                viewModel.storePlayerData()
+                showSuccessToast()
                 return true
             }
-            R.id.showHighScore_menuEntry -> {
-                val highScorePlayer: Player = viewModel.getHighScorePlayer()
-                val dialogBuilder = AlertDialog.Builder(requireContext())
-                val message = TextView(requireContext())
-                message.setPadding(90)
-                message.textSize = 20.0F
-                message.setTextColor(Color.BLACK)
-                if (highScorePlayer.name == "NoName") message.text =
-                    getString(R.string.noHighscoreYet)
-                else message.text = getString(
-                    R.string.highScoreMessage,
-                    highScorePlayer.name,
-                    highScorePlayer.endSumme
-                )
-                dialogBuilder.setTitle("Aktueller Highscore")
-                dialogBuilder.setView(message)
-                val alert = dialogBuilder.create()
-                alert.show()
-                return true
-            }
-
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showSuccessToast() {
+        Toast.makeText(
+            activity, getString(R.string.storingSuccessfully),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
 

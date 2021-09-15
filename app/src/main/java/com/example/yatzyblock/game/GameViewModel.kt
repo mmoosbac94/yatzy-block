@@ -4,14 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.models.Player
-import com.example.yatzyblock.repositories.SharedPreferencesRepository
+import com.example.yatzyblock.repositories.PlayerRepository
+import kotlinx.coroutines.launch
 
 
 class GameViewModel(
     players: Array<Player>,
-    private val sharedPreferencesRepository: SharedPreferencesRepository
+    private val playerRepository: PlayerRepository
 ) : ViewModel() {
 
     private var _playerList = MutableLiveData<MutableList<Player>>(mutableListOf())
@@ -25,16 +27,14 @@ class GameViewModel(
         }
     }
 
-    fun storeHighScorePlayer(list: List<Player>) {
-        var currentHighScorePlayer: Player = getHighScorePlayer()
-        list.forEach {
-            if (it.endSumme > currentHighScorePlayer.endSumme) currentHighScorePlayer = it
+    fun storePlayerData() {
+        viewModelScope.launch {
+            try {
+                playerList.value?.let { playerRepository.storePlayerData(it) }
+            } catch (e: Exception) {
+                Log.i("An error occured: ", e.toString())
+            }
         }
-        sharedPreferencesRepository.insertPlayerData(currentHighScorePlayer)
-    }
-
-    fun getHighScorePlayer(): Player {
-        return sharedPreferencesRepository.getPlayerData()
     }
 
     fun addValueToPlayer(value: Int, player: Player, entryType: EntryType) {

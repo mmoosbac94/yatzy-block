@@ -3,8 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="spieler">Spieler</string>
     <string name="start">Start</string>
-    <string name="storeHighScore">Highscore speichern</string>
-    <string name="showHighScore">Highscore anzeigen</string>
+    <string name="storePlayers">Ergebnisse speichern</string>
     <string name="highScoreMessage">"Aktueller Highscore wird von %1$s mit %2$d Punkten gehalten!"</string>
     <string name="noHighscoreYet">"Aktuell gibt es noch keinen Highscore…"</string>
+    <string name="storingSuccessfully">Ergebnisse wurden erfolgreich gespeichert</string>
 </resources>
