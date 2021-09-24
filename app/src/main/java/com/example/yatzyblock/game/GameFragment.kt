@@ -1,6 +1,5 @@
 package com.example.yatzyblock.game
 
-import android.R.attr
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -12,23 +11,15 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.setPadding
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.R
 import com.example.yatzyblock.databinding.FragmentGameBinding
 import com.example.yatzyblock.models.Player
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import com.google.android.material.snackbar.Snackbar
 import android.widget.Toast
-
-import android.R.attr.data
 
 
 class GameFragment : Fragment(R.layout.fragment_game) {
@@ -43,7 +34,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         setHasOptionsMenu(true)
 
@@ -70,26 +61,24 @@ class GameFragment : Fragment(R.layout.fragment_game) {
         return when (item.itemId) {
             R.id.storeHighScore_menuEntry -> {
                 viewModel.storePlayerData()
-                showSuccessToast()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun showSuccessToast() {
-        Toast.makeText(
-            activity, getString(R.string.storingSuccessfully),
-            Toast.LENGTH_LONG
-        ).show()
-    }
-
-
     private fun init() {
 
         buildTableLayout(argument.players)
 
         addPlayerListObserver()
+        addToastObserver()
+    }
+
+    private fun addToastObserver() {
+        viewModel.toastMessage.observe(viewLifecycleOwner) { toastMessage ->
+            Toast.makeText(activity, toastMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun addPlayerListObserver() {

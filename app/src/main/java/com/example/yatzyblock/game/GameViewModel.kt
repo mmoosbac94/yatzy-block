@@ -1,6 +1,7 @@
 package com.example.yatzyblock.game
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,8 @@ import com.example.yatzyblock.EntryType
 import com.example.yatzyblock.models.Player
 import com.example.yatzyblock.repositories.PlayerRepository
 import kotlinx.coroutines.launch
+import java.lang.Exception
+import java.net.ConnectException
 
 
 class GameViewModel(
@@ -20,6 +23,10 @@ class GameViewModel(
     val playerList: LiveData<MutableList<Player>>
         get() = _playerList
 
+    private var _toastMessage = MutableLiveData<String>()
+    val toastMessage: LiveData<String>
+        get() = _toastMessage
+
 
     init {
         players.map { player ->
@@ -29,11 +36,25 @@ class GameViewModel(
 
     fun storePlayerData() {
         viewModelScope.launch {
-            try {
-                playerList.value?.let { playerRepository.storePlayerData(it) }
-            } catch (e: Exception) {
-                Log.i("An error occured: ", e.toString())
+            playerList.value?.let {
+                try {
+                    playerRepository.storePlayerData(it)
+                    updateToast(ResponseState.SUCCESS)
+                } catch (e: Exception) {
+                    when (e) {
+                        is ConnectException -> updateToast(ResponseState.CONNECTION_ERROR)
+                        else -> updateToast(ResponseState.ERROR)
+                    }
+                }
             }
+        }
+    }
+
+    private fun updateToast(responseState: ResponseState) {
+        when (responseState) {
+            ResponseState.SUCCESS -> _toastMessage.value = "Erfolgreich gespeichert"
+            ResponseState.ERROR -> _toastMessage.value = "Ein Fehler ist aufgetreten"
+            ResponseState.CONNECTION_ERROR -> _toastMessage.value = "Keine Internetverbindung"
         }
     }
 
