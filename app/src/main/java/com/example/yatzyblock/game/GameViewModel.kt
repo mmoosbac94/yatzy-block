@@ -1,7 +1,5 @@
 package com.example.yatzyblock.game
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,6 +45,13 @@ class GameViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun calculateWinner() {
+        playerList.value?.let { playerList ->
+            val winnerPlayer = playerList.maxByOrNull { it.endSumme }
+            winnerPlayer?.wins = 1
         }
     }
 

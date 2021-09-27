@@ -60,6 +60,7 @@ class GameFragment : Fragment(R.layout.fragment_game) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.storeHighScore_menuEntry -> {
+                viewModel.calculateWinner()
                 viewModel.storePlayerData()
                 return true
             }

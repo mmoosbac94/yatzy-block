@@ -8,7 +8,8 @@ import retrofit2.http.Body
 import retrofit2.http.PUT
 
 
-private const val baseURL = "http://10.0.2.2:8080/api/"
+//private const val baseURL = "http://10.0.2.2:8080/api/"
+private const val baseURL = "https://yatzy-server-1337.herokuapp.com/api/"
 
 private val retrofit: Retrofit = Retrofit.Builder()
     .baseUrl(baseURL)
